@@ -13,7 +13,7 @@
          </script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" >
-        <title> Method Test </title>
+        <title> Web Component </title>
         <link rel="icon" href="/content/images/logoSmall.svg" alt="Brendan Devlin's personal logo, designed and created by him."> <!-- Adding favicon which my own logo-->
         <style>
             :root {
@@ -71,25 +71,17 @@
             header h1 {
                 margin-right: 8vw;
             }
-            #buttonSection {
-                margin-left: 10vw;
-                background-color: var(--color-ternary);
-            }
-            textarea {
-                width:60ch;
-                height: 10ch;
-            }
-            #articleDate {
-                height: 2ch;
+            button-count {
+                margin-left: 15vw;
             }
 
         </style>
-        <script type="module" src="methodtest.js"> </script>
+        <script type="module" src="ButtonCount.js"> </script>
 
     </head>
     <body>
         <header>
-            <h1> Method Test </h1>
+            <h1> Web Component </h1>
             <nav id="site-links">
                 <a href="/index.html"> Homepage </a>
                 <a href="https://www.linkedin.com/in/brendan-devlin-7846a7252/"> My LinkedIn </a>
@@ -99,40 +91,15 @@
             <hr>
         </header>
         <main>
-            <section>
-                <form action="" method="">
+           <section id="webComponentPart">
 
-                    <label for="idRecord"> ID Number: </label>
-                    <input type="number" id="idRecord" name="idRecord"> <br><br>
+                <button-count> </button-count>
 
-                    <label for="articleName"> Article Name: </label>
-                    <input type="text" id="articleName" name="articleName"> <br><br>
-
-                    <label for="articleBody"> Article Body: </label>
-                    <textarea id="articleBody" name="articleBody"> </textarea> <br><br>
-
-                    <label for="articleDate"> Date: </label>
-                    <!-- <input type="date" id="articleDate" name="articleDate" readonly> -->
-                    <textarea id="articleDate" name="articleDate" readonly> </textarea> 
-
-                </form>
-            </section>
-            <section id="buttonSection">
-                <button> Post </button>
-                <button> Get </button>
-                <button> Put </button>
-                <button> Delete </button>
-
-            </section>
-            <section id="responseSection">
-
-                <output id="response">
-
-                </output>
-
-            </section>
+           </section>
 
         </main>
+
+
 
     </body>
 
