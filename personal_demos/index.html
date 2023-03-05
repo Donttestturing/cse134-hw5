@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6P3KHGF93R"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-6P3KHGF93R');
+         </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <title> Personal Demos </title>
+        <link rel="icon" href="/content/images/logoSmall.svg" alt="Brendan Devlin's personal logo, designed and created by him."> <!-- Adding favicon which my own logo-->
+        <style>
+            :root {
+                --color-primary: #ddcbee;
+                --color-secondary: #d1b8dd;
+                --color-ternary: #ede2f1;
+                --color-trim: #e0cc6f;
+                --color-dark-trim: #a09048;
+                --color-text:#493652;
+
+                --border-radius: 2px solid;
+                --margin-size: 2vh;
+                --padding-size: 2%;
+
+            }
+            @font-face {
+                font-family: "myCustomFont";
+                src: url("LibreFranklin-VariableFont_wght.ttf");
+            }
+            header {
+                display: flex;
+                padding: 1.5rem;
+               
+                background-color: var(--color-secondary);
+                border-style: ridge;
+            }
+            * {
+                font-family: myCustomFont, Segoe UI, Tahoma, Geneva, Verdana, sans-serif;   
+                font-weight: 600;
+                border-radius: var(--border-radius);
+            }
+            section {
+                margin-bottom: var(--margin-size);
+
+                padding: var(--padding-size);
+                border-color: var(--color-ternary);
+                display: flex;
+                flex-direction: column;
+                background-color: var(--color-primary);
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+            html{
+                background-color: var(--color-ternary);
+            }
+            #iconFig{
+                width: 15vw;
+            }
+            #site-links {
+                display: flex;
+                justify-content: space-around; 
+                gap: 8vw;
+                height: 2vh;
+
+            }
+            header h1 {
+                margin-right: 8vw;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1> Personal Demos </h1>
+            <nav id="site-links">
+                <a href="/index.html"> Homepage </a>
+                <a href="https://www.linkedin.com/in/brendan-devlin-7846a7252/"> My LinkedIn </a>
+                <a href="https://github.com/Donttestturing"> My Github </a>
+                <a href="https://ucsd.edu/"> UCSD's Website </a>
+            </nav>
+            <hr>
+        </header>
+        <main>
+            <section>
+                <h3> Code snippet of inverting Burrows-Wheeler Transform </h3>
+                <p> This is my solution for a totally optional and ungraded challenge given in one of my CS classes. </p>
+                <pre> <code> 
+                    //given a BWTransform, invert to give orig string
+                    string invertBWT(const string & s){
+                        string strToReturn = "";
+                        vector&lt;int&gt; vecL2F = last2FirstHelper(s);
+                        vector&lt;BWTChar&gt; vecToSort, vec;
+                        int l2f;
+                        string str = s.substr(0);
+                        
+                        for(int i = 0; i &lt; s.size(); i++){	//add all letters in BWT given to each vector, one will get sorted and be the vec for the first column
+                            BWTChar bwtCh(str[i]);
+                            vecToSort.push_back(bwtCh);
+                            vec.push_back(bwtCh);
+                        }
+                        sort(vecToSort.begin(), vecToSort.end(), BWTCharCompare);
+                    
+                    //beginning inversion
+                        for(int i = 0; i &lt; vecL2F.size()-1; i++){		
+                            if(i == 0){
+                                l2f = vecL2F[i];
+                                strToReturn.insert(strToReturn.begin(), vecToSort[i].getChar());
+                                strToReturn.insert(strToReturn.begin(), vec[i].getChar());
+                            }else {
+                                l2f = vecL2F[l2f];
+                                strToReturn.insert(strToReturn.begin(), vecToSort[l2f].getChar());
+                            }
+                        }
+                        return strToReturn;
+                    } 
+                </code> </pre>
+                <p> Note that we first <code> push_back()</code> the chars in the string onto a vector, and then we need to sort it. This is a <em> vital step. </em> </p>
+
+            </section>
+
+            <!-- More to add here, if wanted -->
+            <section>
+                <h3> Code of the header file for my personal final project for one of my C++ classes, I implemented a Huffman Tree Encoding and Decoding, there are more files to this project. </h3>
+                <code>
+                    <pre>
+                        /*
+                            HuffmanTree.h - The concrete class representing a HuffmanTree. Given a specific string of any length, a specific HuffmanTree is created based on the characters in the string
+                                            and their frequency in the string, with more frequent characters having a higher weight. This is important because during the building of the HuffmanTree, an array of HuffmanNodes
+                                            is pushed onto a prioity queue (a special kind of max heap, where the 'max' is the node with the highest weight, rather than value at the node) and then, while there are more than one
+                                            HuffmanTrees (which start as nodes) in this prioity queue, 2 of the nodes are popped, a new parent node is created and linked to these 2 popped nodes, and assigned the sum of their weight
+                                            and then pushed back onto the priority queue, this process repeats until there is only one node in the priority queue, this will be the root of the HuffmanTree, and will have all other nodes
+                                            linked to it. 
+                                            
+                                            After this special and specific tree is made, you can use encode and decode using the tree, encode encodes a given string into a string of 1's and 0's representing the path from the root
+                                            toward that char position in the tree, decode performs the opposite travesal by going either left or right in the tree, based on the given encoded string, until you reach a leaf node, at this leaf node will
+                                            be the decoded character for the originally encoded string.
+                            
+                            
+                            Module Final; Final Project 
+                            Author@ Brendan Devlin
+                        */
+
+                        #ifndef HUFFMANTREE_H
+                        #define HUFFMANTREE_H
+
+
+                        #include "HuffManTreeInterface.h"
+                        #include <bits/stdc++.h>
+                        #include <map>
+
+
+                        //use of inheritance
+                        class HuffmanTree : public HuffManTreeInterface {		//inheritance, inheriting from abstract class HuffManTreeInterface
+                            
+                            
+                            //inner arrays for frequency(weight) and characters, used in buildTree function, to build the proper, specific tree depending on input
+                            int *frequency;					
+                            char *charArray;
+                            //private reference to root of huffmantree, gets assigned/linked to the root of the built huffmantree at the end of the buildTree function
+                            HuffmanNode* root;
+                            //internal map built in buildTree function, used in encode function
+                            map<char, string> charPaths;
+
+                            
+                        //use of recursion
+                            /*
+                                Recursive (private) helper function used in buildTree, to store the paths in each specific instance of a HuffmanTree into an internal map
+                                (Each Huffman Tree is potentially different depending on the number of different types of characters
+                                recursively builds a string of 1's and 0's depending on if going right or left down the tree
+                                when it reachs a leaf (where the characters are stored) the function maps the character stored at that leaf node
+                                to the recursively build string of 1's and 0's, this is the path toward that character from the root of the huffman tree
+                                this is used in the encoding for a huffman tree (truly the helper function in the encode function)
+
+
+                                @return - void, stores info into internap map
+                                @param - HuffmanNode* root, root node of huffman tree
+                                        string str - str to be resursively built
+                            */	
+                            void storePaths(HuffmanNode* root, string str){
+                                    
+                                    if (!root){
+                                        return;
+                                    }
+                                    if(root->isLeaf()){
+                                        if( root->getSymbol() != '*'){
+                                            
+                                            this->charPaths.insert(pair<char, string>(root->getSymbol(), str));
+                                        }
+                                        
+                                    }
+                                    storePaths(root->left, str + "0");	//going left is 0
+                                    storePaths(root->right, str + "1");	//going right is 1
+                            }
+                            //other helper function, made private, finds value associated with key targetSymbol in internal map charPaths 
+                            string findPathForCharacter(char targetSymbol);
+                            
+                            public:
+                                //larger functions, to be defined outside of class defintions for better readability 
+                                string encode(string &) override;
+                                string decode(string strToDecode) override;
+                                void buildTree(HuffmanNode *symbols, int size);
+                                
+                                //function to print each node in the huffman tree (including nodes without characters, but simply are parents to ones that do)
+                                //and the specific path to each node, unused in implementation, used for bug testing/verification of correct tree building
+                                void printPaths(HuffmanNode* root, string str) {
+                                
+                                    if (!root){
+                                        return;
+                                    }
+                                    if(isalnum(root->getSymbol()) || root->getSymbol() != '*' && int(root->getSymbol()) >= 32 && int(root->getSymbol()) <= 126)
+                                        cout << "\'" << root->getSymbol() << "\'" << ": " << str << "\n";
+                                    printPaths(root->left, str + "0");
+                                    printPaths(root->right, str + "1");
+                                }
+                                
+                                //taken from Prof. Merrils BinaryTree.h class, unused in implementation, used for bug testing/verification of correct tree building
+                                bool displayInorder(HuffmanNode* tree) {
+                                        if (tree) {
+                                            
+                                            cout << "\n";
+                                            if(displayInorder(tree->left)){
+                                            }
+                                            cout << "         ";
+                                            cout << tree->getSymbol() << "  " ;
+                                            if(displayInorder(tree->right)){
+                                            }
+                                    
+                                        }
+                                }
+                        //use of exceptions
+                                /*
+                                    Constructor, can throw an exception, first creates frequency and char arrays from the given string, then, using those arrays,
+                                    makes a HuffmanNode array from that data, then calls buildTree function, passing in the created HuffmanNode array
+                            
+                                    @param - string str, string representing text to build a huffmantree from
+                                */
+                                HuffmanTree(string str) {
+
+                                    if(str == "" || str == "\n" || str.length() == 0){
+                                        throw new EmptyStringException("");
+                                        return;
+                                    }
+                                    
+                                    
+                                    int codeLength = str.length();
+                                    char cstr[codeLength];
+                                    
+                                    strcpy(cstr, str.c_str());
+
+                                    root = new HuffmanNode[codeLength - 1];
+                                    
+                                    
+                                    frequency = new int[codeLength - 1];
+                                    charArray = new char[codeLength -1];
+                                    charArray = (char *) cstr;
+                                    
+                                    //processing string
+                                    
+                                    //finding the weight (frequency) of each character in given string
+                                    for(int i = 0; i < codeLength; i++){
+                                        
+                                        *(frequency + i) = 1;
+                                        
+                                        for(int j = i + 1; j < codeLength ; j++){
+                                            
+                                            if(*(charArray + i) == *(charArray + j)){
+                                                //count it
+                                                *(frequency + i) = *(frequency + i) + 1;
+                                                //set charArray at j to * to avoid revisiting character
+                                                *(charArray + j) = '*';
+                                                
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    //building HuffmanNode array using found frequency and the character value
+                                    for(int k = 0; k < codeLength ; k++) {  
+                                    
+                                        //* marks already counted character
+                                        if (*(charArray + k) != '*'){
+                                            //instatiation of self-designed class, inner HuffmanNode class
+                                            *(root + k) = new HuffmanNode(*(frequency + k), *(charArray + k));
+                                        }
+                                    }	
+                                    
+                                    //now building actual tree after processing string into HuffmanNodes
+                                    buildTree(root, codeLength); //this will build the tree using the HuffmanNode array I have made from the string
+                                    
+                                }
+                        //example of Exception, potentially thrown in HuffmanTree constructor
+                                //Exception inner class
+                                class EmptyStringException {
+                            
+                                    string message = "EmptyStringException thrown in HuffmanTree constructor ";
+                                    
+                                    public:
+                                        EmptyStringException(string msg){
+                                            message += msg;
+                                        }
+                                        string getMessage(){
+                                            return message;
+                                        }
+                                    
+                                };
+                                //default constructor, unused
+                                HuffmanTree(){
+                                    frequency = nullptr;
+                                    charArray = nullptr;
+                                    root = nullptr;
+                                }
+                        //getters
+                                //get Root function, to get the root of the tree 
+                                HuffmanNode * getRoot(){
+                                    return this->root;
+                                }
+                                int * getFreqArray(){
+                                    return frequency;
+                                }
+                                char * getCharArray(){
+                                    return charArray;
+                                }
+                                map<char, string> getCharPaths(){
+                                    return charPaths;
+                                }
+                        //setters
+                                void setRoot(HuffmanNode *pRoot){
+                                    this->root = pRoot;
+                                }
+                                void setFreqArray(int* pArray){
+                                    this->frequency = pArray;
+                                }
+                                void setCharArray(char* pArray){
+                                    this->charArray = pArray;
+                                }
+                                void setCharPaths(map<char, string> pMapOfCharPaths){
+                                    this->charPaths = pMapOfCharPaths;
+                                }
+                        //destructor, delete all pointers to the heap
+                                ~HuffmanTree(){
+                                    delete[] frequency;
+                                    delete[] charArray;
+                                    delete[] root;
+                                }
+                                
+                            /*
+                                Inner structure class, only has overridden () operator, required for priority_queue function from STL
+                                operatar () takes the left and right huffman nodes, and returns a bool comparison of their weight (frequency)
+                                this allows for the 'lighter' nodes to 'float' up toward the top in the process, since a priority queue is a type of miniumim heap
+                                where the lower weight nodes rise to the top. Used in buildTree function below
+                                    
+                                @return - bool for the overloaded operator function (), if left weight is greater than right weight
+                            */
+                            struct compareNodes {
+                            
+                                bool operator()(HuffmanNode* left, HuffmanNode* right)
+                                {
+                                    return (left->getWeight() > right->getWeight());
+                                }
+                            };
+                            
+                        };
+
+                        /*
+                            Function which, after the HuffmanNode array is built from the frequency and char arrays in the constructor,
+                            Takes the HuffmanNode array and pushes all nodes onto a priority queue, then using a while loop that continues until there is only one 
+                            node left, (this will be the root) it repeatedly pops 2 nodes from the queue, links them to a parent node, and then pushes that parent node 
+                            (with updated/summed weight) onto the queue. After there is only the root node left, assign private node that represents root to this node
+                            Then, call storePaths, a recursive function that traverses the built Tree to store the character paths using a map. For each char in the tree,
+                            there is an associated path represented by a string of 1's and 0's, this is used in the encoding function, and would be unique for each tree.
+                            The HuffmanTree is built and ready to be used for encoding/decoding
+                            
+                            @return - void
+                            @param - HuffmanNode *symbols - array of huffmanNodes made using frequency char values
+                                    int size - int representing size of huffman array
+                        */
+                        void HuffmanTree::buildTree(HuffmanNode *symbols, int size){
+                            
+                            HuffmanNode *leftNode, *rightNode, *topNode;
+                            
+                            //priority queue, large part of building the HuffmanTree
+                            priority_queue<HuffmanNode*, vector<HuffmanNode*>, compareNodes> huffmanTreePQueue;
+                            
+                            for(int i = 0; i < size; i++){
+                                //instatiation of self-designed class, inner HuffmanNode class
+                                huffmanTreePQueue.push(new HuffmanNode((symbols + i)->getWeight(), (symbols + i)->getSymbol()));
+                            }
+
+                            //Build the tree, while size is greater than one in the queue of trees
+                            while(huffmanTreePQueue.size() > 1){
+                                
+                                leftNode = huffmanTreePQueue.top();
+                                huffmanTreePQueue.pop();
+                                
+                                rightNode = huffmanTreePQueue.top();
+                                huffmanTreePQueue.pop();
+                                
+                                //new top
+                                topNode = new HuffmanNode(leftNode->getWeight() + rightNode->getWeight(), '*');		//HERE IS THE ISSUE with 
+                                
+                                topNode->left = leftNode;
+                                topNode->right = rightNode;
+
+                                
+                                huffmanTreePQueue.push(topNode);
+                                
+                            }
+                            
+                            root = huffmanTreePQueue.top();
+                            //setting root to be special character caret, to symbolize the top of the huffman tree
+                            root->setSymbol('^');
+
+                        //invoking recursive function	
+                            //storing paths in internal map, for use in encoding/decoding
+                            storePaths(root, "");
+                            
+                        }
+
+                        /*
+                            Function to encode the given string using the huffman tree, will create a string of 1s and 0s 
+                            representing the traversal path to that character, with more frequent characters being faster to reach, works by considering
+                            the front character in the given string, and then appends that (encoded) char path to the return string, then cuts off that character
+                            from the string, to then consider the next front character on the string, this repeats until the string's length is reduced to 0.
+                            Then the built string is returned
+                            
+                            @return - string representing an encoded version of the given string
+                            @param - string strToEncode, the string given to encode using the HuffmanTree
+                        */
+                        string HuffmanTree::encode(string &strToEncode){
+                            
+                                string toReturn = "";
+
+                                while(strToEncode.length() > 0){
+                                    
+                            
+                                    char comparisonChar = strToEncode[0];
+
+                                    if(int(comparisonChar) >= 32 && int(comparisonChar) <= 126 || int(comparisonChar) == 10)
+                                        toReturn.append(findPathForCharacter(comparisonChar));
+                                    
+                                    strToEncode = strToEncode.substr(1);
+                                    
+                                }
+
+                                return toReturn;
+                        
+                        }
+
+                        /*
+                            Helper function, used in encode function, returns the char path for that character as a string of 1's and 0's, which will be unique for every HuffmanTree.
+                            uses internal map to do so
+                            
+                            @return - returns the char path for that character, for the specific huffman tree, uses the internal map charPaths to do so
+                            @param - char targetSymbol, the character to find in the map, and return the path for
+                        */
+                        string HuffmanTree::findPathForCharacter(char targetSymbol){
+                            
+                            if(charPaths.find(targetSymbol) != charPaths.end()){
+                                auto itr = this->charPaths.find(targetSymbol);
+                                return itr->second;
+                            }
+                            
+                        }
+                            
+                        /*
+                            Function to decode a given encoded string, using the huffman tree. Works by travesing the tree according to the code, 1 is go right, 0 is go left.
+                            this continues until you eventually reach a leaf node, this node will have the correct character stored within it, thus decoding the encoding string.
+                            Then, after all characters have been decoded and appended to a return string, the decoded string is returned, this should be exactly the original string
+                            that was encoded.
+                            
+                            @return - string representing a decoding of an encoded string
+                            @param - string strToDecode, the given string (which should be encoded into 1's and 0's) to be decoded.
+                        */
+                        string HuffmanTree::decode(string strToDecode){
+                            
+                            string toReturn = "";
+                            HuffmanNode *origRoot = root;
+                            
+                            for (int i = 0; i < strToDecode.length(); i++) {
+                                if(strToDecode[i] == '1'){
+                                    root = root->right;
+                                }
+                                else if(strToDecode[i] == '0'){
+                                    root = root->left;
+                                }
+                                
+                                
+                                if (root->isLeaf() && root->getSymbol() != '*'){
+                                    toReturn += root->getSymbol();
+                                    root = origRoot;
+                                }
+                            }
+                            
+                            
+                            
+                            return toReturn;
+                            
+                            
+                        }
+
+
+
+                        #endif </pre>
+                </code>
+
+
+            </section>
+
+
+        </main>
+
+
+
+    </body>
+
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6P3KHGF93R"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-6P3KHGF93R');
+        </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <title> Styled Blog Posts </title>
+        <link rel="icon" href="/content/images/logoSmall.svg" alt="Brendan Devlin's personal logo, designed and created by him."> 
+        <style>
+            main {
+                font-weight: 600;
+            }
+            html{
+                background-color: bisque;
+            }
+            output{
+                padding: 30px;
+                width: 200px;
+                height: 150px;
+            }
+            .addButton {
+                margin-left: 21vw;
+            }
+            dialog {
+                padding: 25px;
+                margin-top: 25vh;
+                margin-left: 40vw;
+            }
+            header {
+                border: 3px rgb(214, 177, 132);
+                border-style:double;
+                text-align: center;
+                background-color: cornflowerblue;
+            }
+            main {
+                background-color: rgb(177, 147, 110);
+                height: 85vh;
+                border-radius: 30px;
+            }
+            section {
+                margin-left: 25vw;
+             
+                margin-top: 10vh;
+                background-color: rgb(160, 178, 212);
+                padding: 20px;
+                min-width: 50vw;
+                max-width: 70ch;
+                border-radius: 6px;
+            }
+
+        </style>
+        <script src="dist/purify.js" > </script> 
+        <script type="module" src="styledblog.js"> </script> 
+    </head>
+    <body>
+        <header>
+            <h1> Styled Blog Posts </h1>
+        </header>
+        <main>
+            <br>
+            <section>
+                <output>
+
+                </output>
+                <br>
+                <button class="addButton">
+                    Add Blog Post
+                </button>
+                <dialog id="userDialogField">
+                
+                </dialog>
+            </section>
+
+        </main>
+        <footer>
+            <a href="https://www.flaticon.com/free-icons/pencil" title="pencil icons">Pencil icons created by Freepik - Flaticon</a> <!-- Attribution needed for free icons -->
+            <br>
+            <a href="https://www.flaticon.com/free-icons/trash" title="trash icons">Trash icons created by Freepik - Flaticon</a>
+        </footer>
+
+    </body>
+
+</html>
