@@ -12,20 +12,21 @@
         buttons[0].addEventListener('click', () => {            
             outputArea.innerText = '';
 
-                const myForm = document.querySelector('form');
-                const formData = new FormData(myForm);
+            const myForm = document.querySelector('form');
+            const formData = new FormData(myForm);
+
             /*    for (const value of formData.values()) {
                     console.log(value);
                 } 
             */
 
-            fetch("https://httpbin.org/post", {method: 'POST', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body: formData})
+            fetch("https://httpbin.org/post", {method: 'POST', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body:  formData})
             .then(response => response.json())
-            .then(result => {
+            .then(resultJSON => {
                 console.log('POST Success:');
     
                 setTimeout(()=>{
-                    outputArea.innerText = JSON.stringify(result, null, 5);
+                    outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
                 }, 10);
 
             })
@@ -56,11 +57,11 @@
 
             fetch(getUrl, {method: 'GET', Headers:{'Accept': 'application/json', 'Accept-Encoding':'application/json'} })
             .then(response => response.json()) //console.log(typeof response)
-            .then(result => {
+            .then(resultJSON => {
                 console.log('GET Success:');
     
                 setTimeout(()=>{
-                    outputArea.innerText = JSON.stringify(result, null, 5);
+                    outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
                 }, 10);
 
             })
@@ -81,11 +82,11 @@
 
             fetch('https://httpbin.org/put', {method: 'PUT', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body: formData })
             .then(response => response.json()) 
-            .then(result => {
+            .then(resultJSON => {
                 console.log('PUT Success:');
     
                 setTimeout(()=>{
-                    outputArea.innerText = JSON.stringify(result, null, 5);
+                    outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
                 }, 10);
 
             })
@@ -111,7 +112,7 @@
                 console.log('DELETE Success:');
     
                 setTimeout(()=>{
-                    outputArea.innerText = JSON.stringify(result, null, 5);
+                    outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
                 }, 10);
 
             })
@@ -124,4 +125,3 @@
                     
         });
 
-        
