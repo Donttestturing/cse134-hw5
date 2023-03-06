@@ -1,3 +1,6 @@
+window.addEventListener('DOMContentLoaded', init);
+   
+function init () {
         //date part
         let date = document.querySelector('#articleDate');
         date.value = new Date();
@@ -58,7 +61,7 @@
             fetch(getUrl, {method: 'GET', Headers:{'Accept': 'application/json', 'Accept-Encoding':'application/json'} })
             .then(response => response.json()) //console.log(typeof response)
             .then(resultJSON => {
-                console.log('GET Success:');
+                console.log('GET Success: ');
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
@@ -66,7 +69,7 @@
 
             })
             .catch(error => {
-                console.error('GET Error:', error);
+                console.error('GET Error: ', error);
             });
 
             
@@ -83,7 +86,7 @@
             fetch('https://httpbin.org/put', {method: 'PUT', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body: formData })
             .then(response => response.json()) 
             .then(resultJSON => {
-                console.log('PUT Success:');
+                console.log('PUT Success: ');
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
@@ -91,9 +94,8 @@
 
             })
             .catch(error => {
-                console.error('PUT Error:', error);
+                console.error('PUT Error: ', error);
             });
-
 
             
         });
@@ -108,7 +110,7 @@
 
             fetch('https://httpbin.org/delete', {method: 'DELETE', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body: formData })
             .then(response => response.json()) 
-            .then(result => {
+            .then(resultJSON => {
                 console.log('DELETE Success:');
     
                 setTimeout(()=>{
@@ -117,11 +119,10 @@
 
             })
             .catch(error => {
-                console.error('DELETE Error:', error);
+                console.error('DELETE Error: ', error);
             });
-
-
 
                     
         });
 
+}
