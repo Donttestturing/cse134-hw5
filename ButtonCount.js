@@ -14,9 +14,9 @@
         buttonArea.addEventListener('click', countButton)
         function countButton () {
             
-            setTimeout(()=>{
+           // setTimeout(()=>{
                 buttonArea.innerText = `Times Clicked: ${++count}`;
-            }, 0);
+           // }, 0);
 
         }
 
