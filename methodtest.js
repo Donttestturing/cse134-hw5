@@ -51,8 +51,8 @@ function init () {
 
             const qString = new URLSearchParams(formData).toString();
 
-            let returnStr = `/?${qString}`
-            console.log(returnStr);
+            let returnStr = `?${qString}`
+           // console.log(returnStr);
         
             
             let getUrl = "https://httpbin.org/get" + returnStr;
