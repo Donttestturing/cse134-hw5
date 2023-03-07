@@ -13,15 +13,10 @@
 
         buttonArea.addEventListener('click', countButton)
         function countButton () {
-            
-           // setTimeout(()=>{
-                buttonArea.innerText = `Times Clicked: ${++count}`;
-           // }, 0);
-
+            buttonArea.innerText = `Times Clicked: ${++count}`;
         }
 
         shadowRoot.appendChild(buttonArea);
-
     }
 }
 

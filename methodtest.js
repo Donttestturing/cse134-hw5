@@ -18,11 +18,6 @@ function init () {
             const myForm = document.querySelector('form');
             const formData = new FormData(myForm);
 
-            /*    for (const value of formData.values()) {
-                    console.log(value);
-                } 
-            */
-
             fetch("https://httpbin.org/post", {method: 'POST', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body:  formData})
             .then(response => response.json())
             .then(resultJSON => {
@@ -30,7 +25,7 @@ function init () {
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
-                }, 10);
+                }, 0);
 
             })
             .catch(error => {
@@ -47,25 +42,19 @@ function init () {
 
             const myForm = document.querySelector('form');
             const formData = new FormData(myForm);
-            //let data = [...formData.entries()];
 
             const qString = new URLSearchParams(formData).toString();
-
-            let returnStr = `?${qString}`
-           // console.log(returnStr);
-        
-            
-            let getUrl = "https://httpbin.org/get" + returnStr;
-
+    
+            let getUrl = `https://httpbin.org/get?${qString}`;
 
             fetch(getUrl, {method: 'GET', Headers:{'Accept': 'application/json', 'Accept-Encoding':'application/json'} })
-            .then(response => response.json()) //console.log(typeof response)
+            .then(response => response.json()) 
             .then(resultJSON => {
                 console.log('GET Success: ');
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
-                }, 10);
+                }, 0);
 
             })
             .catch(error => {
@@ -90,7 +79,7 @@ function init () {
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
-                }, 10);
+                }, 0);
 
             })
             .catch(error => {
@@ -106,16 +95,19 @@ function init () {
             outputArea.innerText = '';
 
             const myForm = document.querySelector('form');
-            const formData = new FormData(myForm);
+            const idRec = myForm.querySelector('#idRecord');
 
-            fetch('https://httpbin.org/delete', {method: 'DELETE', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}, body: formData })
+
+            const queryStr = `?idRecord=${idRec.value}`             //DELETE only using ID number
+
+            fetch('https://httpbin.org/delete'+queryStr, {method: 'DELETE', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
             .then(response => response.json()) 
             .then(resultJSON => {
                 console.log('DELETE Success:');
     
                 setTimeout(()=>{
                     outputArea.innerText = DOMPurify.sanitize(JSON.stringify(resultJSON, null, 5));
-                }, 10);
+                }, 0);
 
             })
             .catch(error => {
