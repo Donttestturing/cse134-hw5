@@ -97,8 +97,7 @@ function init () {
             const myForm = document.querySelector('form');
             const idRec = myForm.querySelector('#idRecord');
 
-
-            const queryStr = `?idRecord=${idRec.value}`             //DELETE only using ID number
+            const queryStr = (idRec.value === '') ? `?idRecord=noDelete` : `?idRecord=${idRec.value}`;             //DELETE only using ID number, noDelete would be some flag for server side
 
             fetch('https://httpbin.org/delete'+queryStr, {method: 'DELETE', Headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
             .then(response => response.json()) 
